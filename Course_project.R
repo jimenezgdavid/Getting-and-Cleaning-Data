@@ -1,9 +1,15 @@
-## This script takes a dataset from UCI etc ...
+## This script takes a dataset from UCI Machine Learning Depository 
+## Human Activity Recognition Using Smartphones Data Set
+## Reference: Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and 
+## Jorge L. Reyes-Ortiz. Human Activity Recognition on Smartphones using a 
+## Multiclass Hardware-Friendly Support Vector Machine. International Workshop 
+## of Ambient Assisted Living (IWAAL 2012). Vitoria-Gasteiz, Spain. Dec 2012
 
 ## Uses base R package plus dplyr package
 
-## Note "UCI HAR Dataset" must be in your working directory
-## Read tables of lables for activities and features
+## Note downloaded directory "UCI HAR Dataset" must be in your working directory
+
+## Read tables of labels for activities and features
 
 activity_labels <- read.table("UCI HAR Dataset/activity_labels.txt")
 feature_labels <- read.table("UCI HAR Dataset/features.txt")
@@ -12,6 +18,8 @@ feature_labels <- read.table("UCI HAR Dataset/features.txt")
 
 features <- feature_labels[,2]
 feature_descriptions <- make.names(features, unique = TRUE)
+
+## Give activity_labels data frame column names
 
 names(activity_labels) = c("Activity_id", "Activity")
 
@@ -42,13 +50,15 @@ colnames(train_table) <- c("Subject_id", "Activity_id", feature_descriptions)
 ## create table that contains both the test and train subjects with activities and feature values
 full_table <- rbind(test_table, train_table)
 
-## Convert activity id to descriptive activity name
+## Merge activity id with descriptive activity name
 activity_labeled <- merge(full_table, activity_labels, by.x = "Activity_id", by.y = "Activity_id")
 
-## extracts subjects, activity, feature mean and feature standard deviation
+## Extracts subjects, activity, and all features that are feature mean and 
+## feature standard deviation of raw measurements
 table_mean_std <- select(activity_labeled, Subject_id, Activity, contains(".mean."), contains(".std."))
 
-## Need to rename feature meand and std to be descriptive name
+## Rename feature meand and std with descriptive names and resorder so that
+## feature mean and feature standard deviation are in adjacent columns
 table_mean_std_described <- select(table_mean_std, Subject = Subject_id, Activity = Activity, 
                                  TotalBodyAccelX.mean = tBodyAcc.mean...X, TotalBodyAccelX.stdev = tBodyAcc.std...X,
                                  TotalBodyAccelY.mean = tBodyAcc.mean...Y, TotalBodyAccelY.stdev = tBodyAcc.std...Y,
@@ -84,10 +94,14 @@ table_mean_std_described <- select(table_mean_std, Subject = Subject_id, Activit
                                  TransformedBodyBodyGyroMagnitude.mean = fBodyBodyGyroMag.mean.., TransformedBodyBodyGyroMagnitude.stdev = fBodyBodyGyroMag.std..,
                                  TransformedBodyBodyGyroJerkMagnitude.mean = fBodyBodyGyroJerkMag.mean.., TransformedBodyBodyGyroJerkMagnitude.stdev = fBodyBodyGyroJerkMag.std..)
 
-## group by subject and activity
+## group table by subject and activity so that each subject has 6 rows, each
+## with one movement activity, and the 66 feature variables
 grouped_table <- group_by(table_mean_std_described, Subject, Activity)
 
-## average of each variable for subject and activity
+## Calculate average for each feature variable for each subject and activity combination
 tidy_data <- summarise_each(grouped_table, c("mean"))
-## write table using using row.name=FALSE 
+
+## View final tidy table
+View(tidy_data)
+
 
