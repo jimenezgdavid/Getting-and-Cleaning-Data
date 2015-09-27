@@ -1,6 +1,6 @@
 ## **Course project for Coursera "Getting and Cleaning Data"**  
 
-#### This repo contains scripts that take .txt files from Human Activity Recognition Using Smartphones Data Set stored in the UCI Machine Learning Repository and creates a tidy data set for understanding the movement dynamics of 30 subjects performing 6 movement activities.  
+#### Codebook for the data table produced by run_analysis.R
 
 [Human Activity Recognition Using Smartphones Data Set] (http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)  
 
@@ -33,10 +33,10 @@ All features are normalized and bounded within [-1,1].
 
 Each feature name has several components:
 
-* Time = raw time domain signal *or* Transformed = Fast Fourier Transformed signal
-* Body = Body movement measured *or* Gravity = Gravity movement measured
-* Accel = Acceleration measured *or* Gyro = Angular velocity measured
-* X, Y or Z = axis *or* Magnitude = total magnitude of movement
-* Jerk = body linear acceleration and angular velocity derived in time
-* mean = average of signals over instances for each subject and activity *or* stdev = standard deviation of signals over instances for each subject and activity
+	* Time = raw time domain signal *or* Transformed = Fast Fourier Transformed signal
+	* Body = Body movement measured *or* Gravity = Gravity movement measured
+	* Accel = Acceleration measured *or* Gyro = Angular velocity measured
+	* X, Y or Z = axis *or* Magnitude = total magnitude of movement
+	* Jerk = body linear acceleration and angular velocity derived in time
+	* mean = average of signals over instances for each subject and activity *or* stdev = 	standard deviation of signals over instances for each subject and activity
 
